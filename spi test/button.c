@@ -19,7 +19,7 @@
 #include <avr/sleep.h>
 
 //definiere den maximalen Modus
-#define maxmode 7
+#define maxmode 5
 
 //Setze Werte für das debouncen der Knöpfe (Aktionen nur einmalig ausführen) und die ISR für Zeitspezifisches 
 
@@ -74,8 +74,7 @@ void initbtn() {
 	//Pullup auf Buttons aktivieren
 	PORTD = 0xff;	
 	
-	EICRA |= (1<<ISC11);
-	EIMSK |= (1<<INT1);
+
 }
 
 //----------------------------------------------------------------------------------------------
@@ -95,15 +94,17 @@ void getModeChange() {
 	} 
 	if(run1 == 1) {
 		MODE++;
+		if(MODE > maxmode) {
+			MODE = 1;
+		}
 		run1 = 0;
-		if(MODE > maxmode) {MODE = 1;}
 	}
 	if(run3 == 1) {
-		MODE--;
-		run3 = 0;
-		if(MODE == 0) {
+		MODE--;	
+		if(MODE < 1) {
 			MODE = maxmode;
 		}
+		run3 = 0;
 	}
 }
 
@@ -149,6 +150,8 @@ void getRunFlags() {
 			sleepTime++;
 			
 			if(sleepTime == 15) {
+				EIMSK |= (1<<INT1);
+				EICRA |= (1<<ISC11);
 				TIMSK0 &= ~(1<<OCIE0A);
 				
 				//clear LEDs

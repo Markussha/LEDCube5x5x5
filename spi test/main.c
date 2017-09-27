@@ -47,7 +47,6 @@ int main(void)
 	initLEDtimer();
 	SPI_MasterInit();
 	initbtn();
-	settimer();
 	
 	//aktiviere Interrupts
 	sei();

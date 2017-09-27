@@ -56,16 +56,7 @@ void animate(unsigned char mode) {
 					led[i] = 1;
 					}break;
 		case 5:		ranranrandom(); break;
-		case 6:		
-		
-			ruediger++;
-			if(ruediger == 20) {
-				ruediger = 0;
-				snakerun();
-			}
-		
-		break;
-		case 7: eggtimer(); break;
+		default: break;
 	}
 	
 
